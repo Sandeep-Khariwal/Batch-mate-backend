@@ -8,11 +8,14 @@ const router = express.Router()
 //new conv
 
 router.post("/", formidable() ,async (req, res) => {
-  const convor = await Conversation.find({})
-  const frnd = convor.map((item)=> item.members.includes(req.fields.receiverId))
-  const me = convor.map((item)=> item.members.includes(req.fields.senderId))
-  if(frnd[0] && me[0]){
-    res.status(200).send({success:false,conversation:convor,message:"conversation already built"});
+  const senderIdConver = await Conversation.find({
+    members:[req.fields.senderId,req.fields.receiverId]
+  })
+  const receiverIdConver = await Conversation.find({
+    members:[req.fields.receiverId,req.fields.senderId]
+  })
+  if(senderIdConver[0] || receiverIdConver[0]){
+    res.status(200).send({success:false,conversation:senderIdConver[0] || receiverIdConver[0],message:"conversation already built"});
   } else {
     const newConversation = new Conversation({
       members: [req.fields.senderId, req.fields.receiverId],

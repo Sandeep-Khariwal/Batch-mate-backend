@@ -12,14 +12,13 @@ export const getUser = async(req,resp)=>{
         const suggested = []
         allUser.map((suggest)=>{
             if( suggest?.coursename.toUpperCase() === user?.coursename.toUpperCase() || suggest?.collegename.toUpperCase() === user?.collegename.toUpperCase() ){
-                if((suggest._id.equals(myId)) ){
+                if(!(suggest._id.equals(id)) ){
                     suggested.push(suggest);
                 }
             }
           });
     
-        const formatteSuggested = suggested.map(
-          ({_id, username, coursename , profilePic , stream})=>{
+        const formatteSuggested = suggested.map(({_id, username, coursename , profilePic , stream})=>{
             return {_id, username, coursename, profilePic , stream}
           }
         );
@@ -64,15 +63,15 @@ export const getMyProfile = async(req,resp) =>{
 export const getUserFriends = async(req,resp)=>{
     try {
         const {friends} = await User.findById(req.params.id);
-        var users = []
-        friends.forEach(async(id,index,arr)=>{
-            await User.findById(id).then((data)=>{
-                users.push(data)
-                if(index === arr.length-1){
-                    resp.status(200).send({success:true,friends:users})
-                }
-            })
+        var friend = []
+        friends.map(async(id,index,arr)=>{
+        const user = await User.findById(id)
+            friend = [...friend,user]
+            if(friend.length-1 === arr.length-1){
+                resp.status(200).send({success:true,friends:friend})
+            }   
         })
+        
     } catch (error) {
         resp.status(404).send({success:false,message:error.message})
         console.log("Something Went Wrong");

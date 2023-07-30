@@ -22,7 +22,7 @@ const router = express.Router()
 router.route("/post/:userId").post(formidable(),upload.single("filename") , CreatePost)
 
 /*GETTING ALL POSTS */
-router.route("/allposts").get(gettingAllPosts)
+router.route("/allposts/:id").get(gettingAllPosts)
 /* GETTING ALL POSTS OF ANY USER */
 router.route("/:userId/posts").get(verifyToken , getUserPosts)
 

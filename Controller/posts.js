@@ -85,8 +85,18 @@ export const getFeedPosts = async(req,resp) =>{
 /*GETT ALL POSTS */
 export const gettingAllPosts = async(req,resp)=>{
   try {
-    const posts = await Post.find({}).sort( { createdAt: -1 } )
-    resp.status(201).send({success:true,posts})
+    const posts = await Post.find({})
+    const user = await User.findById(req.params.id)// .sort( { createdAt: -1 } )
+    const allUser = await User.find({})
+    const suggested = []
+    allUser.map((suggest)=>{
+      if( suggest?.coursename.toUpperCase() === user?.coursename.toUpperCase() || suggest?.collegename.toUpperCase() === user?.collegename.toUpperCase() ){
+      if(!(suggest._id.equals(req.params.id)) ){
+        suggested.push(suggest);
+      }
+      }
+      });
+    resp.status(201).send({success:true,posts,suggested})
   } catch (error) {
     console.log("error in gettingAllPosts",error);
     resp.status(404).send({success:false,error:error.message})
