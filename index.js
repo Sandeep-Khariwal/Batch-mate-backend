@@ -1,6 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors"
+
+import { Server } from "socket.io";
 // import dotenv from "dotenv"
 import morgan from "morgan"
 import multer from "multer"
@@ -50,3 +52,9 @@ const PORT = process.env.PORT || 8080
 app.listen(PORT,()=>{
     console.log(`server running on ${process.env.DEV_MODE} and ${PORT} port number `);
 })
+
+// const serverPort = 3000
+// const io = new Server(serverPort);
+// io.on("connection", (socket) => {
+//   console.log("socket connected");
+// });

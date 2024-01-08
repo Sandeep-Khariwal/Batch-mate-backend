@@ -85,12 +85,14 @@ export const getFeedPosts = async(req,resp) =>{
 /*GETT ALL POSTS */
 export const gettingAllPosts = async(req,resp)=>{
   try {
-    const posts = await Post.find({})
-    const user = await User.findById(req.params.id)// .sort( { createdAt: -1 } )
+    const posts = await Post.find({})// .sort( { createdAt: -1 } )
+    const user = await User.findOne({_id:req.params.id})
+    
     const allUser = await User.find({})
+    
     const suggested = []
     allUser.map((suggest)=>{
-      if( suggest?.coursename.toUpperCase() === user?.coursename.toUpperCase() || suggest?.collegename.toUpperCase() === user?.collegename.toUpperCase() ){
+      if( suggest?.coursename?.toUpperCase() === user?.coursename?.toUpperCase() || suggest?.collegename?.toUpperCase() === user?.collegename?.toUpperCase() ){
       if(!(suggest._id.equals(req.params.id)) ){
         suggested.push(suggest);
       }

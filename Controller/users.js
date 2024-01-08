@@ -11,7 +11,7 @@ export const getUser = async(req,resp)=>{
         const follow = user.friends.includes(myId)
         const suggested = []
         allUser.map((suggest)=>{
-            if( suggest?.coursename.toUpperCase() === user?.coursename.toUpperCase() || suggest?.collegename.toUpperCase() === user?.collegename.toUpperCase() ){
+            if( suggest?.coursename?.toUpperCase() === user?.coursename?.toUpperCase() || suggest?.collegename?.toUpperCase() === user?.collegename?.toUpperCase() ){
                 if(!(suggest._id.equals(id)) ){
                     suggested.push(suggest);
                 }
@@ -25,7 +25,7 @@ export const getUser = async(req,resp)=>{
         resp.status(201).send({success:true,follow,message:"profile found Successfully",user,suggestions:formatteSuggested});
     } catch (error) {
         resp.status(404).send({success:false,message:error.message})
-        console.log("Something Went Wrong");
+        console.log("Something Went Wrong",error);
     }
 
 }
@@ -38,9 +38,9 @@ export const getMyProfile = async(req,resp) =>{
         
         const suggested = []
         allUser.map((suggest)=>{
-            if( suggest?.coursename.toUpperCase().includes(user?.coursename.toUpperCase()) 
-            || suggest?.collegename.toUpperCase().includes(user?.collegename.toUpperCase()) 
-            || suggest?.stream.toUpperCase().includes(user?.stream.toUpperCase()) ){
+            if( suggest?.coursename?.toUpperCase().includes(user?.coursename?.toUpperCase()) 
+            || suggest?.collegename?.toUpperCase().includes(user?.collegename?.toUpperCase()) 
+            || suggest?.stream?.toUpperCase().includes(user?.stream?.toUpperCase()) ){
                 if(!(suggest._id.equals(req.params.id)) ){
                     suggested.push(suggest);
                 }
@@ -55,7 +55,7 @@ export const getMyProfile = async(req,resp) =>{
         resp.status(201).send({success:true,message:"profile found Successfully",user,suggestions:formatteSuggested});
     } catch (error) {
         resp.status(404).send({success:false,message:error.message})
-        console.log("Something Went Wrong");     
+        console.log("Something Went Wrong",error);     
     }
 }
 

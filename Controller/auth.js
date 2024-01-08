@@ -62,7 +62,9 @@ export const Login = async(req,resp) =>{
     try {
         const {email,password} = req.body;
         const user = await User.findOne({email:email});
+        
         const allUser = await User.find({});
+        console.log("allUser : ", allUser)
 
         if(!user){
             resp.status(400).send({success:false,message:"User Not Registered"})
@@ -77,7 +79,7 @@ export const Login = async(req,resp) =>{
 
         const suggested = [];
         allUser.map((suggest)=>{
-                if( suggest.coursename.toUpperCase() === user?.coursename.toUpperCase() || suggest.stream.toUpperCase() === user?.stream.toUpperCase()  || suggest.collegename.toUpperCase() === user?.collegename.toUpperCase()){
+                if( suggest.coursename?.toUpperCase() === user?.coursename?.toUpperCase() || suggest.stream?.toUpperCase() === user?.stream?.toUpperCase()  || suggest.collegename?.toUpperCase() === user?.collegename?.toUpperCase()){
                     if(user._id !== suggest._id){
                         suggested.push(suggest)
                     }
